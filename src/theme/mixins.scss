@@ -6,3 +6,8 @@
   gap: $gap;
   flex-wrap: $wrap;
 }
+
+@mixin fontMix($fs: 1rem, $fw: 400) {
+  font-size: $fs;
+  font-weight: $fw;
+}

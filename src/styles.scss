@@ -1,1 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'constants';
+
+body {
+  background-color: $light-bg;
+}
+
+.max-width-container {
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 0 12rem;
+
+  @media (max-width: 1600px) {
+    padding: 0 4rem;
+  }
+
+  @media (max-width: 450px) {
+    padding: 0 1rem;
+  }
+
+  @media (min-width: 1921px) {
+    padding: 0;
+  }
+}
