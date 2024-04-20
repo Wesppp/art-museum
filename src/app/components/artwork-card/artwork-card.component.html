@@ -1,0 +1,14 @@
+<div
+  [style.backgroundImage]="'url(' + artwork.thumbnail.lqip + ')'"
+  class="artwork-card">
+  <div class="artwork-card__info">
+    <div class="info">
+      <div class="info__title">{{ artwork.title }}</div>
+      <div class="info__artist">{{ artwork.artist_title }}</div>
+      <div class="info__place">{{ artwork.place_of_origin }}</div>
+    </div>
+    <div class="add-to-favorites">
+      <img src="assets/icons/bookmark.svg" alt="add to favorites icon">
+    </div>
+  </div>
+</div>

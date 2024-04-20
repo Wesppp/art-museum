@@ -1,0 +1,55 @@
+@import 'colors';
+@import 'mixins';
+
+.artwork-card {
+  @include flexMix($align: normal);
+
+  position: relative;
+  min-width: 300px;
+  height: 380px;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 2.5rem;
+
+  &__info {
+    @include flexMix($gap: 2rem, $justify: space-between);
+
+    position: absolute;
+    bottom: -2.5rem;
+    width: 250px;
+    padding: 1rem 1.2rem;
+    background-color: #fff;
+
+    .info {
+      overflow: hidden;
+
+      &__title {
+        @include fontMix(1.2rem, 600);
+      }
+
+      &__artist {
+        @include fontMix(.9rem, 500);
+
+        color: $orangeText;
+      }
+
+      &__place {
+        font-weight: 600;
+        margin-top: .5rem;
+      }
+
+      &__title, &__artist, &__place {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    .add-to-favorites {
+      cursor: pointer;
+      border-radius: 50%;
+      padding: .8rem;
+      background-color: $gray-bg;
+    }
+  }
+}

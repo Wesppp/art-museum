@@ -1,5 +1,14 @@
 <div class="root-wrapper">
   <app-header></app-header>
+  @if(artworks$ | async; as artworks) {
+    <ul>
+      @for (artwork of artworks.data; track artwork.id) {
+        <li>
+          <app-artwork-card [artwork]="artwork"></app-artwork-card>
+        </li>
+      }
+    </ul>
+  }
   <router-outlet class="main-content"></router-outlet>
   <app-footer></app-footer>
 </div>
