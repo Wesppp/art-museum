@@ -1,0 +1,68 @@
+@import 'colors';
+@import 'mixins';
+
+.home {
+  @include flexMix(column);
+
+  &__greeting {
+    margin-top: 6rem;
+
+    h1 {
+      @include fontMix(4rem, 700);
+
+      color: $darkText;
+
+      span {
+        color: $orangeText;
+      }
+    }
+  }
+
+  &__search {
+    position: relative;
+    margin-top: 4.5rem;
+    width: 45%;
+
+    input {
+      border-radius: 1rem;
+      background-color: $gray-bg;
+      border: none;
+      padding: .8rem 1rem;
+
+      &:focus {
+        box-shadow: none;
+      }
+
+      &:focus ~ .bi-search {
+        display: none;
+      }
+    }
+
+    .bi-search {
+      font-size: 1.4rem;
+      position: absolute;
+      top: .8rem;
+      right: 1rem;
+    }
+  }
+
+  &__gallery {
+    padding-top: 6rem;
+
+    .gallery__title {
+      text-align: center;
+
+      small {
+        color: $orangeText;
+      }
+
+      h3 {
+        @include fontMix(2rem);
+      }
+    }
+
+    .gallery__list {
+      padding-top: 2rem;
+    }
+  }
+}
