@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   DestroyRef,
   OnInit,
@@ -44,7 +45,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private readonly artworkService: ArtworksService,
     private readonly loadingsService: LoadingsService,
-    private readonly destroyRef: DestroyRef
+    private readonly destroyRef: DestroyRef,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   public ngOnInit(): void {
@@ -68,6 +70,7 @@ export class HomeComponent implements OnInit {
         this.searchText = searchText;
 
         this.changePage(1);
+        this.cdr.markForCheck();
       });
   }
 
