@@ -1,12 +1,65 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  OnInit,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
+import { Observable } from 'rxjs';
+
+import { GetArtworksResponse } from '@models/get-artworks-response.interface';
+import { ArtworksService } from '@services/artworks.service';
+import { LoadingsService } from '@services/loadings.service';
+import { Loadings } from '@enums/loadings.enum';
+import { LoadingSpinnerComponent } from '@components/loading-spinner/loading-spinner.component';
+import { ArtworkCardComponent } from '@components/artwork-card/artwork-card.component';
+import { PaginatorComponent } from '@components/paginator/paginator.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    LoadingSpinnerComponent,
+    ArtworkCardComponent,
+    PaginatorComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent {}
+export class HomeComponent implements OnInit {
+  public artworks$!: Observable<GetArtworksResponse>;
+
+  public page: number = 1;
+  public isArtworksLoading: boolean = false;
+
+  constructor(
+    private readonly artworkService: ArtworksService,
+    private readonly loadingsService: LoadingsService,
+    private readonly destroyRef: DestroyRef
+  ) {}
+
+  public ngOnInit(): void {
+    this.initializeListeners();
+
+    this.artworks$ = this.artworkService.getArtworksWithPagination(this.page);
+  }
+
+  private initializeListeners() {
+    this.loadingsService.loadingState$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.isArtworksLoading = this.loadingsService.checkLoadings([
+          Loadings.ALL_ARTWORKS,
+        ]);
+      });
+  }
+
+  public changePage(page: number): void {
+    this.page = page;
+    this.artworks$ = this.artworkService.getArtworksWithPagination(page);
+  }
+}

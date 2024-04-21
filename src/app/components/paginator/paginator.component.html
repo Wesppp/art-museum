@@ -1,0 +1,33 @@
+<nav aria-label="Artworks navigation list">
+  <ul class="pagination">
+    <li
+      [class.disabled]="page === 1"
+      class="page-item">
+      <a
+        class="page-link arrow"
+        (click)="changePage(-1)">
+        <i class="bi bi-caret-left-fill"></i>
+      </a>
+    </li>
+    @for (pageNumber of getDisplayedPages(); track pageNumber) {
+      <li
+        [class.active]="pageNumber === page"
+        class="page-item">
+        <a
+          class="page-link"
+          (click)="onSelectPage(pageNumber)">
+          {{ pageNumber }}
+        </a>
+      </li>
+    }
+    <li
+      [class.disabled]="page === total_pages"
+      class="page-item">
+      <a
+        class="page-link arrow"
+        (click)="changePage(1)">
+        <i class="bi bi-caret-right-fill"></i>
+      </a>
+    </li>
+  </ul>
+</nav>

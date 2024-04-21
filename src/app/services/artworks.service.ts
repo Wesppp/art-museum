@@ -17,9 +17,13 @@ export class ArtworksService {
     private readonly loadingService: LoadingsService
   ) {}
 
-  public getArtworks(): Observable<GetArtworksResponse> {
+  public getArtworksWithPagination(
+    page: number
+  ): Observable<GetArtworksResponse> {
     return this.http
-      .get<GetArtworksResponse>(`${environment.apiUrl}/artworks`)
+      .get<GetArtworksResponse>(
+        `${environment.apiUrl}/artworks?page=${page}&limit=3`
+      )
       .pipe(
         tap(() => this.loadingService.addLoading(Loadings.ALL_ARTWORKS)),
         finalize(() => this.loadingService.removeLoading(Loadings.ALL_ARTWORKS))

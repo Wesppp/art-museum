@@ -1,0 +1,36 @@
+@import 'mixins';
+@import 'colors';
+
+.pagination {
+  @include flexMix($justify: flex-end, $gap: .2rem);
+
+  .page-item {
+    cursor: pointer;
+
+    .page-link {
+      color: $darkText;
+      border: none;
+      background-color: transparent;
+      font-weight: 500;
+      border-radius: .4rem;
+
+      &:hover {
+        background-color: $transperentOrangeText;
+        color: #fff;
+      }
+    }
+
+    .arrow {
+      font-weight: 700;
+    }
+
+    &.active .page-link {
+      color: #fff;
+      background-color: $orangeText;
+    }
+
+    &.disabled {
+      display: none;
+    }
+  }
+}
