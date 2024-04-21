@@ -9,4 +9,6 @@ export interface Artwork {
   description: string;
   short_description: string;
   artist_title: string;
+  date_start: number;
+  date_end: number;
 }

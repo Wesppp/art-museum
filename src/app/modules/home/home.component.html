@@ -1,9 +1,10 @@
-<div class="home">
+<div class="home max-width-container">
   <div class="home__greeting">
     <h1>Let's find some <span>art</span> here!</h1>
   </div>
   <div class="home__search">
     <input
+      [formControl]="searchControl"
       class="form-control form-control-lg"
       type="text"
       placeholder="Search art, artist, work..."
@@ -15,8 +16,38 @@
       <small>Topics for you</small>
       <h3>Our special gallery</h3>
     </div>
-    <div class="gallery__list">
-      
-    </div>
+    @if(!isArtworksLoading && (artworks$ | async); as artworks) {
+      <div class="gallery__list">
+        <ul class="list">
+          @for (artwork of artworks.data; track artwork.id) {
+            <li class="list__item">
+              <app-artwork-card [artwork]="artwork"></app-artwork-card>
+            </li>
+          } @empty {
+            <h4>There are no such paintings...</h4>
+          }
+        </ul>
+        @if (artworks.data.length) {
+          <div class="list__actions">
+            <select
+              [formControl]="selectControl"
+              class="form-select"
+              aria-label="Sort select for artworks list">
+              <option selected>Sort by</option>
+              @for (option of sortArtworksOptions; track option.label) {
+                <option [value]="option.value">{{ option.label }}</option>
+              }
+            </select>
+            <app-paginator
+            (changePageEvent)="changePage($event)"
+            [page]="page"
+            [total_pages]="artworks.pagination.total_pages"
+          ></app-paginator>
+          </div>
+        }
+      </div>
+    } @else {
+      <app-loading-spinner></app-loading-spinner>
+    }
   </div>
 </div>

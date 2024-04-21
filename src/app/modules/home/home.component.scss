@@ -47,7 +47,7 @@
   }
 
   &__gallery {
-    padding-top: 6rem;
+    padding: 6rem 0;
 
     .gallery__title {
       text-align: center;
@@ -63,6 +63,19 @@
 
     .gallery__list {
       padding-top: 2rem;
+
+      .list {
+        @include flexMix($justify: space-between, $gap: 3.5rem);
+      }
+
+      .list__actions {
+        @include flexMix($justify: space-between);
+
+        .form-select {
+          width: auto;
+          cursor: pointer;
+        }
+      }
     }
   }
 }
