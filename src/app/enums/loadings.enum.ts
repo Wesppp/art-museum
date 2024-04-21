@@ -1,5 +1,5 @@
 export enum Loadings {
   ALL_ARTWORKS = 'all-artworks',
   FAVORIES_ARTWORKS = 'favorites-artworks',
-  ARTWORK = 'artwork',
+  ARTWORK_DETAILS = 'artwork-details',
 }

@@ -10,6 +10,8 @@
   background-size: cover;
   background-position: center;
   margin-bottom: 2.5rem;
+  transition: .2s;
+  cursor: pointer;
 
   &__info {
     @include flexMix($gap: 2rem, $justify: space-between);
@@ -44,12 +46,9 @@
         white-space: nowrap;
       }
     }
+  }
 
-    .add-to-favorites {
-      cursor: pointer;
-      border-radius: 50%;
-      padding: .8rem;
-      background-color: $gray-bg;
-    }
+  &:hover {
+    transform: scale(.95);
   }
 }

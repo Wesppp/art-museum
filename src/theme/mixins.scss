@@ -11,3 +11,10 @@
   font-size: $fs;
   font-weight: $fw;
 }
+
+@mixin coverImageParentContainer() {
+  border-radius: inherit;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}

@@ -1,0 +1,34 @@
+@if (!isArtworkLoading && (artwork$ | async); as artwork) {
+  <div class="artwork-details max-width-container">
+    <div class="artwork-details__image">
+      <img class="image" [src]="artwork.thumbnail.lqip" alt="artwork image">
+      <a class="add-to-favorites">
+        <img src="assets/icons/bookmark.svg" alt="add to favorites">
+      </a>
+    </div>
+    <div class="artwork-details__info">
+      <div class="info">
+        <h1 class="info__title">
+          {{ artwork.title }}
+        </h1>
+        <div class="info__artist">
+          The artist: <span class="hightlight-text-slice">{{ artwork.artist_title | appCheckUndefinedValue }}</span>
+        </div>
+        <div class="info__dates">
+          The beginning of work in
+          <span class="hightlight-text-slice">{{ artwork.date_start }}</span>
+          the end in
+          <span class="hightlight-text-slice">{{ artwork.date_end }}</span>
+        </div>
+      </div>
+      <div class="overview">
+        <h2 class="overview__title">Overview</h2>
+        <p
+          [innerHTML]="artwork.short_description"
+          class="overview__short-description"></p>
+      </div>
+    </div>
+  </div>
+} @else {
+  <app-loading-spinner></app-loading-spinner>
+}

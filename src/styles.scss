@@ -26,3 +26,14 @@ ul {
   list-style-type: none;
   padding: 0;
 }
+
+.add-to-favorites {
+  cursor: pointer;
+  border-radius: 50%;
+  padding: .8rem;
+  background-color: $gray-bg;
+}
+
+.hightlight-text-slice {
+  color: $orangeText;
+}

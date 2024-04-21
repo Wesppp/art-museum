@@ -12,4 +12,11 @@ export const routes: Routes = [
     path: 'home',
     component: HomeComponent,
   },
+  {
+    path: 'artwork-details/:id',
+    loadComponent: () =>
+      import('./modules/artwork-details/artwork-details.component').then(
+        (mod) => mod.ArtworkDetailsComponent
+      ),
+  },
 ];

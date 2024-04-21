@@ -1,0 +1,53 @@
+@import 'mixins';
+@import 'colors';
+
+.artwork-details {
+  @include flexMix($gap: 4rem, $align: normal);
+
+  padding-top: 7.5rem;
+  padding-bottom: 7.5rem;
+
+  &__image {
+    position: relative;
+    width: 400px;
+    min-width: 300px;
+    height: 500px;
+
+    .image {
+      @include coverImageParentContainer();
+    }
+
+    .add-to-favorites {
+      position: absolute;
+      background-color: #fff;
+      top: 1rem;
+      right: 1rem;
+    }
+  }
+
+  &__info {
+    @include flexMix(column, normal, space-between);
+
+    .info {
+      &__title {
+        margin: 0;
+      }
+
+      &__artist {
+        @include fontMix(1.2rem, 500);
+      }
+
+      &__dates {
+        @include fontMix(1.1rem);
+
+        margin-top: 1rem;
+      }
+    }
+
+    .overview {
+      &__short-description {
+        font-size: 1.2rem;
+      }
+    }
+  }
+}
