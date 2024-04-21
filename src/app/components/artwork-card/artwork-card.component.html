@@ -1,5 +1,5 @@
 <div
-  [style.backgroundImage]="'url(' + artwork.thumbnail.lqip + ')'"
+  [style.backgroundImage]="artwork.thumbnail ? 'url(' + artwork.thumbnail.lqip + ')' : 'url(assets/images/no_image.png)'"
   class="artwork-card">
   <div class="artwork-card__info">
     <div class="info">
@@ -12,3 +12,4 @@
     </div>
   </div>
 </div>
+

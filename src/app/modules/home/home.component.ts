@@ -18,6 +18,8 @@ import { Loadings } from '@enums/loadings.enum';
 import { LoadingSpinnerComponent } from '@components/loading-spinner/loading-spinner.component';
 import { ArtworkCardComponent } from '@components/artwork-card/artwork-card.component';
 import { PaginatorComponent } from '@components/paginator/paginator.component';
+import { SORT_ARTWORKS_OPTIONS } from '@constants/sort-artworks-options';
+import { SortArtworksOptions } from '@models/sort-artworks-options.interface';
 
 @Component({
   selector: 'app-home',
@@ -36,11 +38,14 @@ import { PaginatorComponent } from '@components/paginator/paginator.component';
 export class HomeComponent implements OnInit {
   public artworks$!: Observable<GetArtworksResponse>;
 
+  public sortArtworksOptions: SortArtworksOptions[] = SORT_ARTWORKS_OPTIONS;
   public page: number = 1;
   public isArtworksLoading: boolean = false;
   public searchText: string = '';
+  public sort: string = '';
 
   public searchControl: FormControl = new FormControl<string>('');
+  public selectControl: FormControl = new FormControl<string>('Sort by');
 
   constructor(
     private readonly artworkService: ArtworksService,
@@ -52,7 +57,7 @@ export class HomeComponent implements OnInit {
   public ngOnInit(): void {
     this.initializeListeners();
 
-    this.artworks$ = this.artworkService.getArtworks(this.page);
+    this.artworks$ = this.artworkService.getArtworks({ page: this.page });
   }
 
   private initializeListeners() {
@@ -72,10 +77,22 @@ export class HomeComponent implements OnInit {
         this.changePage(1);
         this.cdr.markForCheck();
       });
+
+    this.selectControl.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((selectedValue: string) => {
+        this.sort = selectedValue;
+
+        this.changePage(1);
+      });
   }
 
   public changePage(page: number): void {
     this.page = page;
-    this.artworks$ = this.artworkService.getArtworks(page, this.searchText);
+    this.artworks$ = this.artworkService.getArtworks({
+      q: this.searchText,
+      sort: this.sort,
+      page,
+    });
   }
 }

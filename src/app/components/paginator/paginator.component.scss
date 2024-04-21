@@ -2,7 +2,9 @@
 @import 'colors';
 
 .pagination {
-  @include flexMix($justify: flex-end, $gap: .2rem);
+  @include flexMix($gap: .2rem);
+
+  margin: 0;
 
   .page-item {
     cursor: pointer;

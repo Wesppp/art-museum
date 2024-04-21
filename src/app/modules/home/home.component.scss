@@ -67,6 +67,15 @@
       .list {
         @include flexMix($justify: space-between, $gap: 3.5rem);
       }
+
+      .list__actions {
+        @include flexMix($justify: space-between);
+
+        .form-select {
+          width: auto;
+          cursor: pointer;
+        }
+      }
     }
   }
 }

@@ -28,11 +28,22 @@
           }
         </ul>
         @if (artworks.data.length) {
-          <app-paginator
-          (changePageEvent)="changePage($event)"
-          [page]="page"
-          [total_pages]="artworks.pagination.total_pages"
-        ></app-paginator>
+          <div class="list__actions">
+            <select
+              [formControl]="selectControl"
+              class="form-select"
+              aria-label="Sort select for artworks list">
+              <option selected>Sort by</option>
+              @for (option of sortArtworksOptions; track option.label) {
+                <option [value]="option.value">{{ option.label }}</option>
+              }
+            </select>
+            <app-paginator
+            (changePageEvent)="changePage($event)"
+            [page]="page"
+            [total_pages]="artworks.pagination.total_pages"
+          ></app-paginator>
+          </div>
         }
       </div>
     } @else {
