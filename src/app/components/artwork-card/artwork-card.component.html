@@ -1,4 +1,5 @@
 <div
+  [routerLink]="['/artwork-details', artwork.id]"
   [style.backgroundImage]="artwork.thumbnail ? 'url(' + artwork.thumbnail.lqip + ')' : 'url(assets/images/no_image.png)'"
   class="artwork-card">
   <div class="artwork-card__info">
@@ -7,9 +8,9 @@
       <div class="info__artist">{{ artwork.artist_title }}</div>
       <div class="info__place">{{ artwork.place_of_origin }}</div>
     </div>
-    <div class="add-to-favorites">
+    <a class="add-to-favorites">
       <img src="assets/icons/bookmark.svg" alt="add to favorites icon">
-    </div>
+    </a>
   </div>
 </div>
 
