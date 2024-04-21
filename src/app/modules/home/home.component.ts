@@ -6,8 +6,9 @@ import {
   OnInit,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
-import { Observable } from 'rxjs';
+import { Observable, debounceTime } from 'rxjs';
 
 import { GetArtworksResponse } from '@models/get-artworks-response.interface';
 import { ArtworksService } from '@services/artworks.service';
@@ -25,6 +26,7 @@ import { PaginatorComponent } from '@components/paginator/paginator.component';
     LoadingSpinnerComponent,
     ArtworkCardComponent,
     PaginatorComponent,
+    ReactiveFormsModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -35,6 +37,9 @@ export class HomeComponent implements OnInit {
 
   public page: number = 1;
   public isArtworksLoading: boolean = false;
+  public searchText: string = '';
+
+  public searchControl: FormControl = new FormControl<string>('');
 
   constructor(
     private readonly artworkService: ArtworksService,
@@ -45,7 +50,7 @@ export class HomeComponent implements OnInit {
   public ngOnInit(): void {
     this.initializeListeners();
 
-    this.artworks$ = this.artworkService.getArtworksWithPagination(this.page);
+    this.artworks$ = this.artworkService.getArtworks(this.page);
   }
 
   private initializeListeners() {
@@ -56,10 +61,18 @@ export class HomeComponent implements OnInit {
           Loadings.ALL_ARTWORKS,
         ]);
       });
+
+    this.searchControl.valueChanges
+      .pipe(debounceTime(300), takeUntilDestroyed(this.destroyRef))
+      .subscribe((searchText: string): void => {
+        this.searchText = searchText;
+
+        this.changePage(1);
+      });
   }
 
   public changePage(page: number): void {
     this.page = page;
-    this.artworks$ = this.artworkService.getArtworksWithPagination(page);
+    this.artworks$ = this.artworkService.getArtworks(page, this.searchText);
   }
 }

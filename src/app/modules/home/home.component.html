@@ -4,6 +4,7 @@
   </div>
   <div class="home__search">
     <input
+      [formControl]="searchControl"
       class="form-control form-control-lg"
       type="text"
       placeholder="Search art, artist, work..."
@@ -22,13 +23,17 @@
             <li class="list__item">
               <app-artwork-card [artwork]="artwork"></app-artwork-card>
             </li>
+          } @empty {
+            <h4>There are no such paintings...</h4>
           }
         </ul>
-        <app-paginator
+        @if (artworks.data.length) {
+          <app-paginator
           (changePageEvent)="changePage($event)"
           [page]="page"
           [total_pages]="artworks.pagination.total_pages"
         ></app-paginator>
+        }
       </div>
     } @else {
       <app-loading-spinner></app-loading-spinner>
