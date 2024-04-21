@@ -1,0 +1,22 @@
+@import 'mixins';
+
+.favorites-artworks {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+
+  &__title {
+    font-weight: 800;
+
+    img {
+      width: 2.5rem;
+    }
+  }
+
+  &__list {
+    padding-top: 5rem;
+  }
+
+  &__title, .list__title {
+    text-align: center;
+  }
+}

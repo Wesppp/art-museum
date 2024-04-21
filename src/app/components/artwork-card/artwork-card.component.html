@@ -8,9 +8,8 @@
       <div class="info__artist">{{ artwork.artist_title }}</div>
       <div class="info__place">{{ artwork.place_of_origin }}</div>
     </div>
-    <a class="add-to-favorites">
-      <img src="assets/icons/bookmark.svg" alt="add to favorites icon">
-    </a>
+    <app-add-to-favorites-btn
+      [artworkId]="artwork.id"
+    ></app-add-to-favorites-btn>
   </div>
 </div>
-

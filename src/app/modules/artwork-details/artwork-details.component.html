@@ -2,9 +2,15 @@
   <div class="artwork-details max-width-container">
     <div class="artwork-details__image">
       <img class="image" [src]="artwork.thumbnail.lqip" alt="artwork image">
-      <a class="add-to-favorites">
-        <img src="assets/icons/bookmark.svg" alt="add to favorites">
-      </a>
+      <app-add-to-favorites-btn
+        [style]="{
+          'position': 'absolute',
+          'top': '2rem',
+          'right': '1rem'
+        }"
+        [bgColor]="btnBgColors.WHITE"
+        [artworkId]="artwork.id"
+      ></app-add-to-favorites-btn>
     </div>
     <div class="artwork-details__info">
       <div class="info">
