@@ -1,5 +1,6 @@
 @import 'colors';
 @import 'mixins';
+@import 'constants';
 
 .artwork-card {
   @include flexMix($align: normal);
@@ -56,6 +57,10 @@
     .artwork-card__info {
       position: static;
       min-width: 350px;
+
+      @media (max-width: $smallScreenMaxWidth) {
+        min-width: 300px;
+      }
     }
   }
 

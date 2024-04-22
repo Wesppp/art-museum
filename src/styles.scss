@@ -1,4 +1,5 @@
 @import 'colors';
+@import 'constants';
 
 body {
   background-color: $light-bg;
@@ -9,12 +10,16 @@ body {
   margin: 0 auto;
   padding: 0 12rem;
 
-  @media (max-width: 1600px) {
+  @media (max-width: $largeScreenMaxWidth) {
     padding: 0 4rem;
   }
 
-  @media (max-width: 450px) {
-    padding: 0 1rem;
+  @media (max-width: $mediumScreenMaxWidth) {
+    padding: 0 2rem;
+  }
+
+  @media (max-width: $smallScreenMaxWidth) {
+    padding: 0 .5rem;
   }
 
   @media (min-width: 1921px) {
