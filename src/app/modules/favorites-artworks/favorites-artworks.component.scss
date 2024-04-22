@@ -1,4 +1,5 @@
 @import 'mixins';
+@import 'constants';
 
 .favorites-artworks {
   padding-top: 5rem;
@@ -20,11 +21,11 @@
 
       padding: 2rem 0;
 
-      @media (max-width: 1200px) {
+      @media (max-width: $mediumScreenMaxWidth) {
         grid-template-columns: repeat(2, 1fr);
       }
 
-      @media (max-width: 800px) {
+      @media (max-width: $mediumSmallScreenMaxWidth) {
         grid-template-columns: 1fr;
       }
     }
