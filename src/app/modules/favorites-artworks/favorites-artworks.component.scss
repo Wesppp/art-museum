@@ -14,6 +14,12 @@
 
   &__list {
     padding-top: 5rem;
+
+    .list {
+      @include gridMix(repeat(3, 1fr), 1fr);
+
+      padding: 2rem 0;
+    }
   }
 
   &__title, .list__title {

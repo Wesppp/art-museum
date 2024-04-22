@@ -2,8 +2,10 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
 } from '@angular/core';
 
 import { LocalStorageService } from '@services/local-storage.service';
@@ -21,6 +23,8 @@ import { BtnBgColors } from '@enums/btn-bg-colors.enum';
 export class AddToFavoritesBtnComponent implements OnInit {
   @Input({ required: true }) public artworkId!: number;
   @Input() public bgColor: BtnBgColors = BtnBgColors.GRAY;
+
+  @Output() public revomeFromFavoritesEvent = new EventEmitter<number>();
 
   public favoritesArtworks: number[] = [];
   protected btnBgColors = BtnBgColors;
@@ -42,6 +46,7 @@ export class AddToFavoritesBtnComponent implements OnInit {
         LocalStorage.FAVORITES,
         id
       );
+      this.revomeFromFavoritesEvent.emit(id);
     } else {
       this.favoritesArtworks = [...this.favoritesArtworks, id];
       this.localStorageService.addElementToStorage<number>(

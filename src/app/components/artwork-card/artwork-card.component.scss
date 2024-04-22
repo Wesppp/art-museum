@@ -48,6 +48,22 @@
     }
   }
 
+  &--small {
+    background-image: none !important;
+    height: auto;
+    position: static;
+
+    .artwork-card__info {
+      position: static;
+      min-width: 350px;
+    }
+  }
+
+  &__image {
+    width: 80px;
+    height: 80px;
+  }
+
   &:hover {
     transform: scale(.95);
   }

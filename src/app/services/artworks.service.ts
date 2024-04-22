@@ -1,7 +1,8 @@
+import { LocalStorageService } from './local-storage.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Observable, finalize, map, tap } from 'rxjs';
+import { Observable, finalize, forkJoin, map, tap } from 'rxjs';
 
 import { environment } from '@environments/environment.development';
 import { GetArtworksResponse } from '@models/get-artworks-response.interface';
@@ -11,6 +12,7 @@ import { ARTWORK_REQEST_FIELDS } from '@constants/artwork-request-fields';
 import { RequestParams } from '@models/request-params.interface';
 import { Artwork } from '@models/artwork.interface';
 import { GetArtworkResponse } from '@models/get-artwork-response.interface';
+import { LocalStorage } from '@enums/local-storage.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +20,8 @@ import { GetArtworkResponse } from '@models/get-artwork-response.interface';
 export class ArtworksService {
   constructor(
     private readonly http: HttpClient,
-    private readonly loadingService: LoadingsService
+    private readonly loadingService: LoadingsService,
+    private readonly localStorageService: LocalStorageService
   ) {}
 
   public getArtworks(params?: RequestParams): Observable<GetArtworksResponse> {
@@ -55,5 +58,33 @@ export class ArtworksService {
           this.loadingService.removeLoading(Loadings.ARTWORK_DETAILS)
         )
       );
+  }
+
+  public getFavortiesArtworks(): Observable<Artwork[]> {
+    const favoritesArtworksIds: number[] =
+      this.localStorageService.getStorageData(LocalStorage.FAVORITES);
+
+    return forkJoin<Artwork[]>(
+      favoritesArtworksIds.map((id) =>
+        this.http
+          .get<GetArtworkResponse>(
+            `${environment.apiUrl}/artworks/${id}?fields=${ARTWORK_REQEST_FIELDS}`
+          )
+          .pipe(
+            map((res: GetArtworkResponse) => res.data),
+            tap(() => {
+              if (
+                !this.loadingService.checkLoadings([Loadings.FAVORIES_ARTWORKS])
+              ) {
+                this.loadingService.addLoading(Loadings.FAVORIES_ARTWORKS);
+              }
+            })
+          )
+      )
+    ).pipe(
+      finalize(() =>
+        this.loadingService.removeLoading(Loadings.FAVORIES_ARTWORKS)
+      )
+    );
   }
 }

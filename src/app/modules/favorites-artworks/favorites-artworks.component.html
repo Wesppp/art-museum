@@ -10,8 +10,20 @@
       <small class="hightlight-text-slice">Saved by you</small>
       <h3>Your favorites list</h3>
     </div>
-    <ul class="list">
-
-    </ul>
+    @if(!isFavoritesArtworksLoading && favoritesArtworks) {
+      <ul class="list">
+        @for (favoriteArtwork of favoritesArtworks; track favoriteArtwork.id) {
+          <li class="list__item">
+            <app-artwork-card
+              (revomeFromFavoritesEvent)="revomeFromFavorites($event)"
+              [artwork]="favoriteArtwork"
+              [isSmallCard]="true"
+            ></app-artwork-card>
+          </li>
+        }
+      </ul>
+    } @else {
+      <app-loading-spinner></app-loading-spinner>
+    }
   </div>
 </div>
