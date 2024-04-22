@@ -10,4 +10,7 @@ export interface GetArtworksResponse {
     next_url: string;
   };
   data: Artwork[];
+  config: {
+    iiif_url: string;
+  };
 }

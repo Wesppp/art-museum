@@ -1,7 +1,10 @@
 @if (!isArtworkLoading && (artwork$ | async); as artwork) {
   <div class="artwork-details max-width-container">
     <div class="artwork-details__image">
-      <img class="image" [src]="artwork.thumbnail.lqip" alt="artwork image">
+      <img
+        class="image"
+        [src]="artwork.image_url"
+        [alt]="artwork.thumbnail.alt_text">
       <app-add-to-favorites-btn
         [style]="{
           'position': 'absolute',
