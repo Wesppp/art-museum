@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -20,6 +20,7 @@ import { CheckUndefinedValuePipe } from 'app/pipes/check-undefined-value.pipe';
     RouterLink,
     AddToFavoritesBtnComponent,
     CheckUndefinedValuePipe,
+    NgOptimizedImage,
   ],
   templateUrl: './artwork-card.component.html',
   styleUrl: './artwork-card.component.scss',

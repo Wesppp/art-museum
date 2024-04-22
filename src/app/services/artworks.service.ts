@@ -11,8 +11,12 @@ import { Loadings } from '@enums/loadings.enum';
 import { ARTWORK_REQEST_FIELDS } from '@constants/artwork-request-fields';
 import { RequestParams } from '@models/request-params.interface';
 import { Artwork } from '@models/artwork.interface';
-import { GetArtworkResponse } from '@models/get-artwork-response.interface';
 import { LocalStorage } from '@enums/local-storage.enum';
+import { GetArtworkResponse } from '@models/get-artwork-response.interface';
+import {
+  artworkResponseMapper,
+  artworksResponseMapper,
+} from '@utils/artworks-mapers';
 
 @Injectable({
   providedIn: 'root',
@@ -41,6 +45,7 @@ export class ArtworksService {
         }
       )
       .pipe(
+        map(artworksResponseMapper),
         tap(() => this.loadingService.addLoading(Loadings.ALL_ARTWORKS)),
         finalize(() => this.loadingService.removeLoading(Loadings.ALL_ARTWORKS))
       );
@@ -52,7 +57,7 @@ export class ArtworksService {
         `${environment.apiUrl}/artworks/${id}?fields=${ARTWORK_REQEST_FIELDS}`
       )
       .pipe(
-        map((res: GetArtworkResponse) => res.data),
+        map(artworkResponseMapper),
         tap(() => this.loadingService.addLoading(Loadings.ARTWORK_DETAILS)),
         finalize(() =>
           this.loadingService.removeLoading(Loadings.ARTWORK_DETAILS)
@@ -71,7 +76,7 @@ export class ArtworksService {
             `${environment.apiUrl}/artworks/${id}?fields=${ARTWORK_REQEST_FIELDS}`
           )
           .pipe(
-            map((res: GetArtworkResponse) => res.data),
+            map(artworkResponseMapper),
             tap(() => {
               if (
                 !this.loadingService.checkLoadings([Loadings.FAVORIES_ARTWORKS])
