@@ -18,3 +18,11 @@
   width: 100%;
   height: 100%;
 }
+
+@mixin gridMix($columns: none, $rows: none, $gap: 0, $areas: none) {
+  display: grid;
+  grid-template-columns: $columns;
+  grid-template-rows: $rows;
+  grid-gap: $gap;
+  grid-template-areas: $areas;
+}

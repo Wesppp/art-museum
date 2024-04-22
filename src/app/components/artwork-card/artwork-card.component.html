@@ -1,16 +1,23 @@
 <div
   [routerLink]="['/artwork-details', artwork.id]"
   [style.backgroundImage]="artwork.thumbnail ? 'url(' + artwork.thumbnail.lqip + ')' : 'url(assets/images/no_image.png)'"
+  [class.artwork-card--small]="isSmallCard"
   class="artwork-card">
   <div class="artwork-card__info">
+    @if (isSmallCard) {
+      <img
+      [src]="artwork.thumbnail ? artwork.thumbnail.lqip : 'assets/images/no_image.png'"
+      alt="artwork"
+      class="artwork-card__image">
+    }
     <div class="info">
       <div class="info__title">{{ artwork.title }}</div>
-      <div class="info__artist">{{ artwork.artist_title }}</div>
+      <div class="info__artist">{{ artwork.artist_title | appCheckUndefinedValue}}</div>
       <div class="info__place">{{ artwork.place_of_origin }}</div>
     </div>
-    <a class="add-to-favorites">
-      <img src="assets/icons/bookmark.svg" alt="add to favorites icon">
-    </a>
+    <app-add-to-favorites-btn
+      (revomeFromFavoritesEvent)="revomeFromFavorites($event)"
+      [artworkId]="artwork.id"
+    ></app-add-to-favorites-btn>
   </div>
 </div>
-

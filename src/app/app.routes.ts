@@ -19,4 +19,11 @@ export const routes: Routes = [
         (mod) => mod.ArtworkDetailsComponent
       ),
   },
+  {
+    path: 'favorite-arts',
+    loadComponent: () =>
+      import('./modules/favorites-artworks/favorites-artworks.component').then(
+        (mod) => mod.FavoritesArtworksComponent
+      ),
+  },
 ];

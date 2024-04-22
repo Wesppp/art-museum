@@ -1,4 +1,3 @@
-import { LoadingsService } from './../../services/loadings.service';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -16,6 +15,11 @@ import { Artwork } from '@models/artwork.interface';
 import { ArtworksService } from '@services/artworks.service';
 import { LoadingSpinnerComponent } from '@components/loading-spinner/loading-spinner.component';
 import { CheckUndefinedValuePipe } from 'app/pipes/check-undefined-value.pipe';
+import { LocalStorageService } from '@services/local-storage.service';
+import { LocalStorage } from '@enums/local-storage.enum';
+import { LoadingsService } from '@services/loadings.service';
+import { AddToFavoritesBtnComponent } from '@components/add-to-favorites-btn/add-to-favorites-btn.component';
+import { BtnBgColors } from '@enums/btn-bg-colors.enum';
 
 @Component({
   selector: 'app-artwork-details',
@@ -28,6 +32,7 @@ import { CheckUndefinedValuePipe } from 'app/pipes/check-undefined-value.pipe';
     NgOptimizedImage,
     LoadingSpinnerComponent,
     CheckUndefinedValuePipe,
+    AddToFavoritesBtnComponent,
   ],
 })
 export class ArtworkDetailsComponent implements OnInit {
@@ -38,11 +43,13 @@ export class ArtworkDetailsComponent implements OnInit {
   public artwork$!: Observable<Artwork>;
 
   public isArtworkLoading: boolean = false;
+  protected btnBgColors = BtnBgColors;
 
   constructor(
     private readonly artworksService: ArtworksService,
     private readonly loadingsService: LoadingsService,
-    private readonly destroyRef: DestroyRef
+    private readonly destroyRef: DestroyRef,
+    private readonly localStorageService: LocalStorageService
   ) {}
 
   public ngOnInit(): void {
@@ -57,5 +64,12 @@ export class ArtworkDetailsComponent implements OnInit {
           Loadings.ARTWORK_DETAILS,
         ]);
       });
+  }
+
+  public addToFavorites(id: number): void {
+    this.localStorageService.addElementToStorage<number>(
+      LocalStorage.FAVORITES,
+      id
+    );
   }
 }
