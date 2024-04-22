@@ -1,5 +1,6 @@
 @import 'colors';
 @import 'mixins';
+@import 'constants';
 
 .home {
   @include flexMix(column);
@@ -11,6 +12,7 @@
       @include fontMix(4rem, 700);
 
       color: $darkText;
+      text-align: center;
 
       span {
         color: $orangeText;
@@ -66,6 +68,10 @@
 
       .list {
         @include flexMix($justify: space-between, $gap: 3.5rem);
+
+        @media (max-width: $mediumScreenMaxWidth) {
+          flex-direction: column;
+        }
       }
 
       .list__actions {
@@ -76,6 +82,18 @@
           cursor: pointer;
         }
       }
+    }
+  }
+
+  @media (max-width: $mediumScreenMaxWidth) {
+    &__search {
+      width: 75%;
+    }
+  }
+
+  @media (max-width: $smallScreenMaxWidth) {
+    &__search {
+      width: 90%;
     }
   }
 }
