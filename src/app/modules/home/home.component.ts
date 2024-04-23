@@ -20,6 +20,7 @@ import { ArtworkCardComponent } from '@components/artwork-card/artwork-card.comp
 import { PaginatorComponent } from '@components/paginator/paginator.component';
 import { SORT_ARTWORKS_OPTIONS } from '@constants/sort-artworks-options';
 import { SortArtworksOptions } from '@models/sort-artworks-options.interface';
+import { LocalStorage } from '@enums/local-storage.enum';
 
 @Component({
   selector: 'app-home',
@@ -56,6 +57,7 @@ export class HomeComponent implements OnInit {
 
   public ngOnInit(): void {
     this.initializeListeners();
+    this.restorePageFromLocalStorage();
 
     this.artworks$ = this.artworkService.getArtworks({ page: this.page });
   }
@@ -73,6 +75,7 @@ export class HomeComponent implements OnInit {
       .pipe(debounceTime(300), takeUntilDestroyed(this.destroyRef))
       .subscribe((searchText: string): void => {
         this.searchText = searchText;
+        console.log(searchText);
 
         this.changePage(1);
         this.cdr.markForCheck();
@@ -94,5 +97,18 @@ export class HomeComponent implements OnInit {
       sort: this.sort,
       page,
     });
+
+    this.savePageToLocalStorage();
+  }
+
+  private savePageToLocalStorage(): void {
+    localStorage.setItem(LocalStorage.CURRENT_PAGE, this.page.toString());
+  }
+
+  private restorePageFromLocalStorage(): void {
+    const savedPage = localStorage.getItem(LocalStorage.CURRENT_PAGE);
+    if (savedPage) {
+      this.page = +savedPage;
+    }
   }
 }

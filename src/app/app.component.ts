@@ -23,7 +23,9 @@ export class AppComponent implements OnInit {
 
   public ngOnInit(): void {
     this.messageService.errorMessage$.subscribe((message: string) => {
-      this.createComponent(message);
+      if (message) {
+        this.createComponent(message);
+      }
     });
   }
 
