@@ -2,7 +2,7 @@ import { LocalStorageService } from './local-storage.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Observable, finalize, forkJoin, map, tap } from 'rxjs';
+import { Observable, finalize, forkJoin, map, of, tap } from 'rxjs';
 
 import { environment } from '@environments/environment.development';
 import { GetArtworksResponse } from '@models/get-artworks-response.interface';
@@ -68,6 +68,10 @@ export class ArtworksService {
   public getFavortiesArtworks(): Observable<Artwork[]> {
     const favoritesArtworksIds: number[] =
       this.localStorageService.getStorageData(LocalStorage.FAVORITES);
+
+    if (!favoritesArtworksIds.length) {
+      return of([]);
+    }
 
     return forkJoin<Artwork[]>(
       favoritesArtworksIds.map((id) =>

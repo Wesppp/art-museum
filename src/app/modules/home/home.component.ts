@@ -46,7 +46,6 @@ export class HomeComponent implements OnInit {
   public sort: string = '';
 
   public searchControl: FormControl = new FormControl<string>('');
-  public selectControl: FormControl = new FormControl<string>('Sort by');
 
   constructor(
     private readonly artworkService: ArtworksService,
@@ -75,18 +74,9 @@ export class HomeComponent implements OnInit {
       .pipe(debounceTime(300), takeUntilDestroyed(this.destroyRef))
       .subscribe((searchText: string): void => {
         this.searchText = searchText;
-        console.log(searchText);
 
         this.changePage(1);
         this.cdr.markForCheck();
-      });
-
-    this.selectControl.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((selectedValue: string) => {
-        this.sort = selectedValue;
-
-        this.changePage(1);
       });
   }
 
@@ -110,5 +100,11 @@ export class HomeComponent implements OnInit {
     if (savedPage) {
       this.page = +savedPage;
     }
+  }
+
+  public selectSortField(selectedValue: string): void {
+    this.sort = selectedValue;
+
+    this.changePage(1);
   }
 }

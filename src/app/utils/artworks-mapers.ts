@@ -8,7 +8,9 @@ export function artworksResponseMapper(
   const iiifUrl = res.config.iiif_url;
   const artworks: Artwork[] = res.data.map((artwork: Artwork) => ({
     ...artwork,
-    image_url: `${iiifUrl}/${artwork.image_id}/full/843,/0/default.jpg`,
+    image_url: artwork.image_id
+      ? `${iiifUrl}/${artwork.image_id}/full/843,/0/default.jpg`
+      : 'assets/images/no_image.png',
   }));
 
   return {
@@ -23,6 +25,8 @@ export function artworkResponseMapper(res: GetArtworkResponse): Artwork {
 
   return {
     ...res.data,
-    image_url: `${iiifUrl}/${imageId}/full/843,/0/default.jpg`,
+    image_url: imageId
+      ? `${iiifUrl}/${imageId}/full/843,/0/default.jpg`
+      : 'assets/images/no_image.png',
   };
 }

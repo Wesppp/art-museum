@@ -20,6 +20,8 @@
               [isSmallCard]="true"
             ></app-artwork-card>
           </li>
+        } @empty {
+          <h2>There are not favorites artworks...</h2>
         }
       </ul>
     } @else {
