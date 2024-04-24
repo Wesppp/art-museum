@@ -1,0 +1,99 @@
+@import 'colors';
+@import 'mixins';
+@import 'constants';
+
+.home {
+  @include flexMix(column);
+
+  &__greeting {
+    margin-top: 6rem;
+
+    h1 {
+      @include fontMix(4rem, 700);
+
+      color: $darkText;
+      text-align: center;
+
+      span {
+        color: $orangeText;
+      }
+    }
+  }
+
+  &__search {
+    position: relative;
+    margin-top: 4.5rem;
+    width: 45%;
+
+    input {
+      border-radius: 1rem;
+      background-color: $gray-bg;
+      border: none;
+      padding: .8rem 1rem;
+
+      &:focus {
+        box-shadow: none;
+      }
+
+      &:focus ~ .bi-search {
+        display: none;
+      }
+    }
+
+    .bi-search {
+      font-size: 1.4rem;
+      position: absolute;
+      top: .8rem;
+      right: 1rem;
+    }
+  }
+
+  &__gallery {
+    padding: 6rem 0;
+
+    .gallery__title {
+      text-align: center;
+
+      small {
+        color: $orangeText;
+      }
+
+      h3 {
+        @include fontMix(2rem);
+      }
+    }
+
+    .gallery__list {
+      padding-top: 2rem;
+
+      .list {
+        @include flexMix($justify: space-between, $gap: 3.5rem);
+
+        @media (max-width: $mediumScreenMaxWidth) {
+          flex-direction: column;
+        }
+      }
+
+      .list__actions {
+        @include flexMix($justify: space-between);
+
+        .form-select {
+          width: auto;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  @media (max-width: $mediumScreenMaxWidth) {
+    &__search {
+      width: 75%;
+    }
+  }
+
+  @media (max-width: $smallScreenMaxWidth) {
+    &__search {
+      width: 90%;
+    }
+  }
+}

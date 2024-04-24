@@ -1,0 +1,26 @@
+<div
+  [routerLink]="['/artwork-details', artwork.id]"
+  [style.backgroundImage]="'url(' + artwork.image_url + ')'"
+  [class.artwork-card--small]="isSmallCard"
+  class="artwork-card">
+  <div class="artwork-card__info">
+    @if (isSmallCard) {
+      <img
+      [ngSrc]="artwork.image_url"
+      priority
+      width="80"
+      height="80"
+      [alt]="artwork.thumbnail.alt_text"
+      class="artwork-card__image">
+    }
+    <div class="info">
+      <div class="info__title">{{ artwork.title }}</div>
+      <div class="info__artist">{{ artwork.artist_title | appCheckUndefinedValue}}</div>
+      <div class="info__place">{{ artwork.place_of_origin | appCheckUndefinedValue }}</div>
+    </div>
+    <app-add-to-favorites-btn
+      (revomeFromFavoritesEvent)="revomeFromFavorites($event)"
+      [artworkId]="artwork.id"
+    ></app-add-to-favorites-btn>
+  </div>
+</div>

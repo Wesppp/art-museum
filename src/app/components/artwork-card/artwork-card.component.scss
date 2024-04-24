@@ -1,0 +1,70 @@
+@import 'colors';
+@import 'mixins';
+@import 'constants';
+
+.artwork-card {
+  @include flexMix($align: normal);
+
+  position: relative;
+  min-width: 300px;
+  height: 380px;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 2.5rem;
+  transition: .2s;
+  cursor: pointer;
+
+  &__info {
+    @include flexMix($gap: 2rem, $justify: space-between);
+
+    position: absolute;
+    bottom: -2.5rem;
+    width: 250px;
+    padding: 1rem 1.2rem;
+    background-color: #fff;
+
+    .info {
+      overflow: hidden;
+
+      &__title {
+        @include fontMix(1.2rem, 600);
+      }
+
+      &__artist {
+        @include fontMix(.9rem, 500);
+
+        color: $orangeText;
+      }
+
+      &__place {
+        font-weight: 600;
+        margin-top: .5rem;
+      }
+
+      &__title, &__artist, &__place {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  &--small {
+    background-image: none !important;
+    height: auto;
+    position: static;
+
+    .artwork-card__info {
+      position: static;
+      min-width: 350px;
+
+      @media (max-width: $smallScreenMaxWidth) {
+        min-width: 300px;
+      }
+    }
+  }
+
+  &:hover {
+    transform: scale(.95);
+  }
+}

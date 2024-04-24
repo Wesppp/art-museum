@@ -1,0 +1,37 @@
+@import 'mixins';
+@import 'constants';
+
+.favorites-artworks {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+
+  &__title {
+    font-weight: 800;
+
+    img {
+      width: 2.5rem;
+    }
+  }
+
+  &__list {
+    padding-top: 5rem;
+
+    .list {
+      @include gridMix(repeat(3, 1fr), 1fr);
+
+      padding: 2rem 0;
+
+      @media (max-width: $mediumScreenMaxWidth) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @media (max-width: $mediumSmallScreenMaxWidth) {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+
+  &__title, .list__title {
+    text-align: center;
+  }
+}

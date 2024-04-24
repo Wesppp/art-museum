@@ -1,0 +1,28 @@
+@mixin flexMix($direction: row, $align: center, $justify: center, $gap: 0, $wrap: unset) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: $align;
+  justify-content: $justify;
+  gap: $gap;
+  flex-wrap: $wrap;
+}
+
+@mixin fontMix($fs: 1rem, $fw: 400) {
+  font-size: $fs;
+  font-weight: $fw;
+}
+
+@mixin coverImageParentContainer() {
+  border-radius: inherit;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+@mixin gridMix($columns: none, $rows: none, $gap: 0, $areas: none) {
+  display: grid;
+  grid-template-columns: $columns;
+  grid-template-rows: $rows;
+  grid-gap: $gap;
+  grid-template-areas: $areas;
+}

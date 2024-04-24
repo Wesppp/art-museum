@@ -1,1 +1,53 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'colors';
+@import 'constants';
+
+body {
+  background-color: $light-bg;
+}
+
+.max-width-container {
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 0 12rem;
+
+  @media (max-width: $largeScreenMaxWidth) {
+    padding: 0 4rem;
+  }
+
+  @media (max-width: $mediumScreenMaxWidth) {
+    padding: 0 2rem;
+  }
+
+  @media (max-width: $smallScreenMaxWidth) {
+    padding: 0 .5rem;
+  }
+
+  @media (min-width: 1921px) {
+    padding: 0;
+  }
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.add-to-favorites {
+  cursor: pointer;
+  border-radius: 50%;
+  padding: .9rem .8rem;
+
+  &.added {
+    background-color: $transperentOrangeText !important;
+  }
+  &.white {
+    background-color: #fff;
+  }
+  &.gray {
+    background-color: $gray-bg;
+  }
+}
+
+.hightlight-text-slice {
+  color: $orangeText;
+}

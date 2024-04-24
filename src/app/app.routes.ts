@@ -1,3 +1,29 @@
 import { Routes } from '@angular/router';
 
-export const routes: Routes = [];
+import { HomeComponent } from '@modules/home/home.component';
+
+export const routes: Routes = [
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: '/home',
+  },
+  {
+    path: 'home',
+    component: HomeComponent,
+  },
+  {
+    path: 'artwork-details/:id',
+    loadComponent: () =>
+      import('./modules/artwork-details/artwork-details.component').then(
+        (mod) => mod.ArtworkDetailsComponent
+      ),
+  },
+  {
+    path: 'favorite-arts',
+    loadComponent: () =>
+      import('./modules/favorites-artworks/favorites-artworks.component').then(
+        (mod) => mod.FavoritesArtworksComponent
+      ),
+  },
+];
