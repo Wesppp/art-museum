@@ -31,15 +31,22 @@
         </ul>
         @if (artworks.data.length) {
           <div class="list__actions">
-            <select
-              [formControl]="selectControl"
-              class="form-select"
-              aria-label="Sort select for artworks list">
-              <option selected>Sort by</option>
-              @for (option of sortArtworksOptions; track option.label) {
-                <option [value]="option.value">{{ option.label }}</option>
-              }
-            </select>
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Sort by
+              </button>
+              <ul class="dropdown-menu">
+                @for (option of sortArtworksOptions; track option.label) {
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      (click)="selectSortField(option.value)"
+                      >{{ option.label }}
+                    </a>
+                  </li>
+                }
+              </ul>
+            </div>
             <app-paginator
               (changePageEvent)="changePage($event)"
               [page]="page"
