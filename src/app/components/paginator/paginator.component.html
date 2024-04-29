@@ -1,7 +1,7 @@
 <nav aria-label="Artworks navigation list">
   <ul class="pagination">
     <li
-      [class.disabled]="page === 1"
+      [class.disabled]="page() === 1"
       class="page-item">
       <a
         class="page-link arrow"
@@ -11,7 +11,7 @@
     </li>
     @for (pageNumber of getDisplayedPages(); track pageNumber) {
       <li
-        [class.active]="pageNumber === page"
+        [class.active]="pageNumber === page()"
         class="page-item">
         <a
           class="page-link"
@@ -21,7 +21,7 @@
       </li>
     }
     <li
-      [class.disabled]="page === total_pages"
+      [class.disabled]="page() === total_pages()"
       class="page-item">
       <a
         class="page-link arrow"

@@ -1,10 +1,10 @@
 <a
   [ngClass]="{
-    'added': favoritesArtworks.includes(artworkId),
-    'white': bgColor === btnBgColors.WHITE,
-    'gray': bgColor === btnBgColors.GRAY
+    'added': favoritesArtworks.includes(artworkId()),
+    'white': bgColor() === btnBgColors.WHITE,
+    'gray': bgColor() === btnBgColors.GRAY
   }"
   class="add-to-favorites"
-  (click)="addToFavorites(artworkId, $event)">
+  (click)="addToFavorites(artworkId(), $event)">
   <img src="assets/icons/bookmark.svg" alt="add to favorites icon">
 </a>

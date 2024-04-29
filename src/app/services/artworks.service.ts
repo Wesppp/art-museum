@@ -1,6 +1,6 @@
 import { LocalStorageService } from './local-storage.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, WritableSignal, signal } from '@angular/core';
 
 import { Observable, finalize, forkJoin, map, of, tap } from 'rxjs';
 
@@ -22,6 +22,10 @@ import {
   providedIn: 'root',
 })
 export class ArtworksService {
+  removeedArtworkFromFavorites: WritableSignal<number | null> = signal<
+    number | null
+  >(null);
+
   constructor(
     private readonly http: HttpClient,
     private readonly loadingService: LoadingsService,

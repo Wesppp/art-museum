@@ -4,7 +4,8 @@
   </div>
   <div class="home__search">
     <input
-      [formControl]="searchControl"
+      [ngModel]="searchText()"
+      (ngModelChange)="searchText.set($event)"
       class="form-control form-control-lg"
       type="text"
       placeholder="Search art, artist, work..."
@@ -16,7 +17,7 @@
       <small>Topics for you</small>
       <h3>Our special gallery</h3>
     </div>
-    @if(!isArtworksLoading && (artworks$ | async); as artworks) {
+    @if(!isArtworksLoading() && artworks(); as artworks) {
       <div class="gallery__list">
         <ul class="list">
           @for (artwork of artworks.data; track artwork.id) {

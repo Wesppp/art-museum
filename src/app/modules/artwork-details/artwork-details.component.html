@@ -1,4 +1,4 @@
-@if (!isArtworkLoading && (artwork$ | async); as artwork) {
+@if (!isArtworkLoading() && artwork(); as artwork) {
   <div class="artwork-details max-width-container">
     <div class="artwork-details__image">
       <img

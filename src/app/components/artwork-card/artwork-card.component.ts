@@ -1,11 +1,5 @@
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { Artwork } from '@models/artwork.interface';
@@ -27,12 +21,6 @@ import { CheckUndefinedValuePipe } from 'app/pipes/check-undefined-value.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArtworkCardComponent {
-  @Input({ required: true }) public artwork!: Artwork;
-  @Input() public isSmallCard: boolean = false;
-
-  @Output() public revomeFromFavoritesEvent = new EventEmitter<number>();
-
-  public revomeFromFavorites(id: number): void {
-    this.revomeFromFavoritesEvent.emit(id);
-  }
+  artwork = input.required<Artwork>();
+  isSmallCard = input<boolean>(false);
 }

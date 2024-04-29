@@ -1,16 +1,18 @@
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  DestroyRef,
   OnInit,
+  Signal,
+  WritableSignal,
+  computed,
+  effect,
+  signal,
 } from '@angular/core';
 
 import { Artwork } from '@models/artwork.interface';
 import { ArtworksService } from '@services/artworks.service';
 import { LoadingsService } from '@services/loadings.service';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Loadings } from '@enums/loadings.enum';
 import { LoadingSpinnerComponent } from '@components/loading-spinner/loading-spinner.component';
 import { ArtworkCardComponent } from '@components/artwork-card/artwork-card.component';
@@ -24,46 +26,44 @@ import { ArtworkCardComponent } from '@components/artwork-card/artwork-card.comp
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FavoritesArtworksComponent implements OnInit {
-  public favoritesArtworks!: Artwork[];
+  favoritesArtworks: WritableSignal<Artwork[] | null> = signal<
+    Artwork[] | null
+  >(null);
+  isFavoritesArtworksLoading: Signal<boolean> = computed(() => {
+    this.loadingsService.loadingState();
 
-  public isFavoritesArtworksLoading: boolean = false;
+    return this.loadingsService.checkLoadings([Loadings.FAVORIES_ARTWORKS]);
+  });
 
   constructor(
     private readonly artworksService: ArtworksService,
-    private readonly loadingsService: LoadingsService,
-    private readonly destroyRef: DestroyRef,
-    private readonly cdr: ChangeDetectorRef
-  ) {}
+    private readonly loadingsService: LoadingsService
+  ) {
+    effect(
+      () => {
+        const artId = this.artworksService.removeedArtworkFromFavorites();
 
-  public ngOnInit(): void {
-    this.initializeListeners();
+        if (artId) {
+          this.favoritesArtworks.update((state) =>
+            state
+              ? state.filter((artwork: Artwork) => artwork.id !== artId)
+              : state
+          );
+        }
+      },
+      { allowSignalWrites: true }
+    );
+  }
+
+  ngOnInit(): void {
     this.initializeValues();
   }
 
   private initializeValues(): void {
     this.artworksService
       .getFavortiesArtworks()
-      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((favoritesArtworks: Artwork[]) => {
-        this.favoritesArtworks = favoritesArtworks;
-
-        this.cdr.markForCheck();
+        this.favoritesArtworks.set(favoritesArtworks);
       });
-  }
-
-  private initializeListeners(): void {
-    this.loadingsService.loadingState$
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.isFavoritesArtworksLoading = this.loadingsService.checkLoadings([
-          Loadings.FAVORIES_ARTWORKS,
-        ]);
-      });
-  }
-
-  public revomeFromFavorites(id: number): void {
-    this.favoritesArtworks = this.favoritesArtworks.filter(
-      (artwork: Artwork) => artwork.id !== id
-    );
   }
 }

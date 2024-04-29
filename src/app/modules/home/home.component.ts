@@ -1,15 +1,18 @@
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   DestroyRef,
   OnInit,
+  Signal,
+  WritableSignal,
+  computed,
+  signal,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { Observable, debounceTime } from 'rxjs';
+import { Observable, debounceTime, tap } from 'rxjs';
 
 import { GetArtworksResponse } from '@models/get-artworks-response.interface';
 import { ArtworksService } from '@services/artworks.service';
@@ -31,62 +34,72 @@ import { LocalStorage } from '@enums/local-storage.enum';
     ArtworkCardComponent,
     PaginatorComponent,
     ReactiveFormsModule,
+    FormsModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnInit {
-  public artworks$!: Observable<GetArtworksResponse>;
+  artworks: WritableSignal<GetArtworksResponse | null> =
+    signal<GetArtworksResponse | null>(null);
+  isArtworksLoading: Signal<boolean> = computed(() => {
+    this.loadingsService.loadingState();
 
-  public sortArtworksOptions: SortArtworksOptions[] = SORT_ARTWORKS_OPTIONS;
-  public page: number = 1;
-  public isArtworksLoading: boolean = false;
-  public searchText: string = '';
-  public sort: string = '';
+    return this.loadingsService.checkLoadings([Loadings.ALL_ARTWORKS]);
+  });
+  searchText: WritableSignal<string> = signal<string>('');
 
-  public searchControl: FormControl = new FormControl<string>('');
+  searchText$: Observable<string> = toObservable(this.searchText);
+
+  sortArtworksOptions: SortArtworksOptions[] = SORT_ARTWORKS_OPTIONS;
+  page: number = 1;
+  sort: string = '';
 
   constructor(
     private readonly artworkService: ArtworksService,
     private readonly loadingsService: LoadingsService,
-    private readonly destroyRef: DestroyRef,
-    private readonly cdr: ChangeDetectorRef
+    private readonly destroyRef: DestroyRef
   ) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.initializeListeners();
     this.restorePageFromLocalStorage();
-
-    this.artworks$ = this.artworkService.getArtworks({ page: this.page });
+    this.initializeValues();
   }
 
   private initializeListeners() {
-    this.loadingsService.loadingState$
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.isArtworksLoading = this.loadingsService.checkLoadings([
-          Loadings.ALL_ARTWORKS,
-        ]);
-      });
+    this.searchText$
+      .pipe(
+        debounceTime(300),
+        tap((searchText: string) => {
+          this.searchText.set(searchText);
+          this.changePage(1);
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe();
+  }
 
-    this.searchControl.valueChanges
-      .pipe(debounceTime(300), takeUntilDestroyed(this.destroyRef))
-      .subscribe((searchText: string): void => {
-        this.searchText = searchText;
-
-        this.changePage(1);
-        this.cdr.markForCheck();
+  private initializeValues(): void {
+    this.artworkService
+      .getArtworks({ page: this.page })
+      .subscribe((artworks: GetArtworksResponse) => {
+        this.artworks.set(artworks);
       });
   }
 
-  public changePage(page: number): void {
+  changePage(page: number): void {
     this.page = page;
-    this.artworks$ = this.artworkService.getArtworks({
-      q: this.searchText,
-      sort: this.sort,
-      page,
-    });
+    this.artworkService
+      .getArtworks({
+        q: this.searchText(),
+        sort: this.sort,
+        page,
+      })
+      .subscribe((artworks) => {
+        this.artworks.set(artworks);
+      });
 
     this.savePageToLocalStorage();
   }
@@ -102,7 +115,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  public selectSortField(selectedValue: string): void {
+  selectSortField(selectedValue: string): void {
     this.sort = selectedValue;
 
     this.changePage(1);
