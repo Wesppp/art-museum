@@ -35,13 +35,15 @@ ul {
 .add-to-favorites {
   cursor: pointer;
   border-radius: 50%;
-  padding: .9rem .8rem;
+  padding: .8rem;
+  background-color: transparent;
+  border: none;
 
   &.added {
     background-color: $transperentOrangeText !important;
   }
   &.white {
-    background-color: #fff;
+    background-color: $white;
   }
   &.gray {
     background-color: $gray-bg;

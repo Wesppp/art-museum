@@ -2,21 +2,19 @@ import { CommonModule, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
-  Input,
-  OnInit,
+  Signal,
+  WritableSignal,
+  computed,
+  effect,
+  input,
+  signal,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
-import { Observable } from 'rxjs';
 
 import { Loadings } from '@enums/loadings.enum';
 import { Artwork } from '@models/artwork.interface';
 import { ArtworksService } from '@services/artworks.service';
 import { LoadingSpinnerComponent } from '@components/loading-spinner/loading-spinner.component';
 import { CheckUndefinedValuePipe } from 'app/pipes/check-undefined-value.pipe';
-import { LocalStorageService } from '@services/local-storage.service';
-import { LocalStorage } from '@enums/local-storage.enum';
 import { LoadingsService } from '@services/loadings.service';
 import { AddToFavoritesBtnComponent } from '@components/add-to-favorites-btn/add-to-favorites-btn.component';
 import { BtnBgColors } from '@enums/btn-bg-colors.enum';
@@ -35,41 +33,35 @@ import { BtnBgColors } from '@enums/btn-bg-colors.enum';
     AddToFavoritesBtnComponent,
   ],
 })
-export class ArtworkDetailsComponent implements OnInit {
-  @Input() public set id(id: string) {
-    this.artwork$ = this.artworksService.getArtworkById(id);
-  }
+export class ArtworkDetailsComponent {
+  id = input.required<string>();
 
-  public artwork$!: Observable<Artwork>;
+  artwork: WritableSignal<Artwork | null> = signal<Artwork | null>(null);
+  isArtworkLoading: Signal<boolean> = computed(() => {
+    this.loadingsService.loadingState();
 
-  public isArtworkLoading: boolean = false;
+    return this.loadingsService.checkLoadings([Loadings.ARTWORK_DETAILS]);
+  });
+
   protected btnBgColors = BtnBgColors;
 
   constructor(
     private readonly artworksService: ArtworksService,
-    private readonly loadingsService: LoadingsService,
-    private readonly destroyRef: DestroyRef,
-    private readonly localStorageService: LocalStorageService
-  ) {}
+    private readonly loadingsService: LoadingsService
+  ) {
+    effect(
+      () => {
+        const id = this.id();
 
-  public ngOnInit(): void {
-    this.initializeListeners();
-  }
-
-  private initializeListeners(): void {
-    this.loadingsService.loadingState$
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.isArtworkLoading = this.loadingsService.checkLoadings([
-          Loadings.ARTWORK_DETAILS,
-        ]);
-      });
-  }
-
-  public addToFavorites(id: number): void {
-    this.localStorageService.addElementToStorage<number>(
-      LocalStorage.FAVORITES,
-      id
+        if (id) {
+          this.artworksService
+            .getArtworkById(id)
+            .subscribe((artwork: Artwork) => {
+              this.artwork.set(artwork);
+            });
+        }
+      },
+      { allowSignalWrites: true }
     );
   }
 }

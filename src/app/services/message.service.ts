@@ -8,12 +8,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class MessageService {
   private errorMessageSubject: BehaviorSubject<string> =
     new BehaviorSubject<string>('');
-  public errorMessage$: Observable<string> =
-    this.errorMessageSubject.asObservable();
+  errorMessage$: Observable<string> = this.errorMessageSubject.asObservable();
 
-  constructor() {}
-
-  public setErrorMessage(message: string): void {
+  setErrorMessage(message: string): void {
     this.errorMessageSubject.next(message);
   }
 }

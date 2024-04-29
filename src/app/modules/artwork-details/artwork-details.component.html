@@ -1,4 +1,4 @@
-@if (!isArtworkLoading && (artwork$ | async); as artwork) {
+@if (!isArtworkLoading() && artwork(); as artwork) {
   <div class="artwork-details max-width-container">
     <div class="artwork-details__image">
       <img
@@ -6,11 +6,7 @@
         [src]="artwork.image_url"
         [alt]="artwork.thumbnail.alt_text">
       <app-add-to-favorites-btn
-        [style]="{
-          'position': 'absolute',
-          'top': '2rem',
-          'right': '1rem'
-        }"
+        class="add-to-favorites-btn"
         [bgColor]="btnBgColors.WHITE"
         [artworkId]="artwork.id"
       ></app-add-to-favorites-btn>

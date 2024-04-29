@@ -13,14 +13,14 @@
       @include flexMix();
 
       a {
-        color: #fff;
+        color: $white;
         padding: .5rem;
       }
     }
   }
 
   .navbar-toggler {
-    border-color: #fff;
+    border-color: $white;
 
     &:focus {
       box-shadow: none;

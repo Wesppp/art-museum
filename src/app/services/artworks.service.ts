@@ -1,6 +1,6 @@
 import { LocalStorageService } from './local-storage.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, WritableSignal, signal } from '@angular/core';
 
 import { Observable, finalize, forkJoin, map, of, tap } from 'rxjs';
 
@@ -22,13 +22,17 @@ import {
   providedIn: 'root',
 })
 export class ArtworksService {
+  removedArtworkFromFavorites: WritableSignal<number | null> = signal<
+    number | null
+  >(null);
+
   constructor(
     private readonly http: HttpClient,
     private readonly loadingService: LoadingsService,
     private readonly localStorageService: LocalStorageService
   ) {}
 
-  public getArtworks(params?: RequestParams): Observable<GetArtworksResponse> {
+  getArtworks(params?: RequestParams): Observable<GetArtworksResponse> {
     let queryParams: HttpParams = new HttpParams();
 
     for (const key in params) {
@@ -51,7 +55,7 @@ export class ArtworksService {
       );
   }
 
-  public getArtworkById(id: string): Observable<Artwork> {
+  getArtworkById(id: string): Observable<Artwork> {
     return this.http
       .get<GetArtworkResponse>(
         `${environment.apiUrl}/artworks/${id}?fields=${ARTWORK_REQEST_FIELDS}`
@@ -65,7 +69,7 @@ export class ArtworksService {
       );
   }
 
-  public getFavortiesArtworks(): Observable<Artwork[]> {
+  getFavortiesArtworks(): Observable<Artwork[]> {
     const favoritesArtworksIds: number[] =
       this.localStorageService.getStorageData(LocalStorage.FAVORITES);
 

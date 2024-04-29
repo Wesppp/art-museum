@@ -2,15 +2,14 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
-  Input,
   OnInit,
-  Output,
+  input,
 } from '@angular/core';
 
 import { LocalStorageService } from '@services/local-storage.service';
 import { LocalStorage } from '@enums/local-storage.enum';
 import { BtnBgColors } from '@enums/btn-bg-colors.enum';
+import { ArtworksService } from '@services/artworks.service';
 
 @Component({
   selector: 'app-add-to-favorites-btn',
@@ -21,23 +20,24 @@ import { BtnBgColors } from '@enums/btn-bg-colors.enum';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddToFavoritesBtnComponent implements OnInit {
-  @Input({ required: true }) public artworkId!: number;
-  @Input() public bgColor: BtnBgColors = BtnBgColors.GRAY;
+  artworkId = input.required<number>();
+  bgColor = input<BtnBgColors>(BtnBgColors.GRAY);
 
-  @Output() public revomeFromFavoritesEvent = new EventEmitter<number>();
-
-  public favoritesArtworks: number[] = [];
+  favoritesArtworks: number[] = [];
   protected btnBgColors = BtnBgColors;
 
-  public ngOnInit(): void {
+  constructor(
+    private readonly artworkService: ArtworksService,
+    private readonly localStorageService: LocalStorageService
+  ) {}
+
+  ngOnInit(): void {
     this.favoritesArtworks = this.localStorageService.getStorageData<number[]>(
       LocalStorage.FAVORITES
     );
   }
 
-  constructor(private readonly localStorageService: LocalStorageService) {}
-
-  public addToFavorites(id: number, event: MouseEvent): void {
+  addToFavorites(id: number, event: MouseEvent): void {
     event.stopPropagation();
 
     if (this.favoritesArtworks.includes(id)) {
@@ -46,7 +46,7 @@ export class AddToFavoritesBtnComponent implements OnInit {
         LocalStorage.FAVORITES,
         id
       );
-      this.revomeFromFavoritesEvent.emit(id);
+      this.artworkService.removedArtworkFromFavorites.set(id);
     } else {
       this.favoritesArtworks = [...this.favoritesArtworks, id];
       this.localStorageService.addElementToStorage<number>(

@@ -16,9 +16,7 @@ describe('LoadingsService', () => {
     const loadingName = Loadings.ALL_ARTWORKS;
 
     service.addLoading(loadingName);
-    service.loadingState$.subscribe((loadings) => {
-      expect(loadings).toContain(loadingName);
-    });
+    expect(service.loadingState()).toContain(loadingName);
   });
 
   it('should remove a loading state', () => {
@@ -26,9 +24,7 @@ describe('LoadingsService', () => {
 
     service.addLoading(loadingName);
     service.removeLoading(loadingName);
-    service.loadingState$.subscribe((loadings) => {
-      expect(loadings).not.toContain(loadingName);
-    });
+    expect(service.loadingState()).not.toContain(loadingName);
   });
 
   it('should check if all loadings are present', () => {

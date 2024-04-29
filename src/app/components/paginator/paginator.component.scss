@@ -18,7 +18,11 @@
 
       &:hover {
         background-color: $transperentOrangeText;
-        color: #fff;
+        color: $white;
+      }
+
+      &:focus {
+        box-shadow: none;
       }
     }
 
@@ -27,7 +31,7 @@
     }
 
     &.active .page-link {
-      color: #fff;
+      color: $white;
       background-color: $orangeText;
     }
 
