@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class LocalStorageService {
-  public addElementToStorage<T>(key: string, element: T): T {
+  addElementToStorage<T>(key: string, element: T): T {
     const existingData: T[] = JSON.parse(localStorage.getItem(key) || '[]');
 
     if (existingData.includes(element)) {
@@ -16,14 +16,14 @@ export class LocalStorageService {
     return element;
   }
 
-  public removeElementFromStorage<T>(key: string, element: T): void {
+  removeElementFromStorage<T>(key: string, element: T): void {
     const existingData: T[] = this.getStorageData<T[]>(key);
     const updatedData: T[] = existingData.filter((item: T) => item !== element);
 
     localStorage.setItem(key, JSON.stringify(updatedData));
   }
 
-  public getStorageData<T>(key: string): T | [] {
+  getStorageData<T>(key: string): T | [] {
     const existingData: string | null = localStorage.getItem(key);
 
     if (existingData) {

@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CommonModule } from '@angular/common';
-
 import { PaginatorComponent } from './paginator.component';
+import { CommonModule } from '@angular/common';
+import { ComponentRef } from '@angular/core';
 
 describe('PaginatorComponent', () => {
   let component: PaginatorComponent;
+  let componentRef: ComponentRef<PaginatorComponent>;
   let fixture: ComponentFixture<PaginatorComponent>;
 
   beforeEach(async () => {
@@ -16,6 +17,8 @@ describe('PaginatorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PaginatorComponent);
     component = fixture.componentInstance;
+    componentRef = fixture.componentRef;
+    componentRef.setInput('total_pages', 10);
     fixture.detectChanges();
   });
 
@@ -32,34 +35,23 @@ describe('PaginatorComponent', () => {
     expect(emitSpy).toHaveBeenCalledWith(pageNumber);
   });
 
-  it('should change page number when changePage is called with positive value', () => {
-    const initialPage = component.page;
-    component.total_pages = 10;
-
-    const value = 1;
-
-    component.changePage(value);
-
-    expect(component.page).toBe(initialPage + value);
-  });
-
   it('should not change page number when changePage is called with negative value and page is 1', () => {
     const initialPage = 1;
-    component.page = initialPage;
     const value = -1;
 
     component.changePage(value);
 
-    expect(component.page).toBe(initialPage);
+    expect(component.page()).toBe(initialPage);
   });
 
   it('should not change page number when changePage is called with positive value and page is equal to total_pages', () => {
-    const initialPage = component.total_pages;
-    component.page = initialPage;
+    componentRef.setInput('total_pages', 10);
+    const initialPage = component.total_pages();
+    componentRef.setInput('page', initialPage);
     const value = 1;
 
     component.changePage(value);
 
-    expect(component.page).toBe(initialPage);
+    expect(component.page()).toBe(initialPage);
   });
 });

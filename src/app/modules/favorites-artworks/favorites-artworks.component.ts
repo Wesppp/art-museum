@@ -16,6 +16,7 @@ import { LoadingsService } from '@services/loadings.service';
 import { Loadings } from '@enums/loadings.enum';
 import { LoadingSpinnerComponent } from '@components/loading-spinner/loading-spinner.component';
 import { ArtworkCardComponent } from '@components/artwork-card/artwork-card.component';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-favorites-artworks',
@@ -26,9 +27,7 @@ import { ArtworkCardComponent } from '@components/artwork-card/artwork-card.comp
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FavoritesArtworksComponent implements OnInit {
-  favoritesArtworks: WritableSignal<Artwork[] | null> = signal<
-    Artwork[] | null
-  >(null);
+  favoritesArtworks: WritableSignal<Artwork[]> = signal<Artwork[]>([]);
   isFavoritesArtworksLoading: Signal<boolean> = computed(() => {
     this.loadingsService.loadingState();
 
@@ -62,8 +61,11 @@ export class FavoritesArtworksComponent implements OnInit {
   private initializeValues(): void {
     this.artworksService
       .getFavortiesArtworks()
-      .subscribe((favoritesArtworks: Artwork[]) => {
-        this.favoritesArtworks.set(favoritesArtworks);
-      });
+      .pipe(
+        tap((favoritesArtworks: Artwork[]) =>
+          this.favoritesArtworks.set(favoritesArtworks)
+        )
+      )
+      .subscribe();
   }
 }

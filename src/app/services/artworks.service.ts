@@ -22,7 +22,7 @@ import {
   providedIn: 'root',
 })
 export class ArtworksService {
-  removeedArtworkFromFavorites: WritableSignal<number | null> = signal<
+  removedArtworkFromFavorites: WritableSignal<number | null> = signal<
     number | null
   >(null);
 
@@ -32,7 +32,7 @@ export class ArtworksService {
     private readonly localStorageService: LocalStorageService
   ) {}
 
-  public getArtworks(params?: RequestParams): Observable<GetArtworksResponse> {
+  getArtworks(params?: RequestParams): Observable<GetArtworksResponse> {
     let queryParams: HttpParams = new HttpParams();
 
     for (const key in params) {
@@ -55,7 +55,7 @@ export class ArtworksService {
       );
   }
 
-  public getArtworkById(id: string): Observable<Artwork> {
+  getArtworkById(id: string): Observable<Artwork> {
     return this.http
       .get<GetArtworkResponse>(
         `${environment.apiUrl}/artworks/${id}?fields=${ARTWORK_REQEST_FIELDS}`
@@ -69,7 +69,7 @@ export class ArtworksService {
       );
   }
 
-  public getFavortiesArtworks(): Observable<Artwork[]> {
+  getFavortiesArtworks(): Observable<Artwork[]> {
     const favoritesArtworksIds: number[] =
       this.localStorageService.getStorageData(LocalStorage.FAVORITES);
 

@@ -84,9 +84,8 @@ export class HomeComponent implements OnInit {
   private initializeValues(): void {
     this.artworkService
       .getArtworks({ page: this.page })
-      .subscribe((artworks: GetArtworksResponse) => {
-        this.artworks.set(artworks);
-      });
+      .pipe(tap((artworks) => this.artworks.set(artworks)))
+      .subscribe();
   }
 
   changePage(page: number): void {
@@ -97,9 +96,8 @@ export class HomeComponent implements OnInit {
         sort: this.sort,
         page,
       })
-      .subscribe((artworks) => {
-        this.artworks.set(artworks);
-      });
+      .pipe(tap((artworks) => this.artworks.set(artworks)))
+      .subscribe();
 
     this.savePageToLocalStorage();
   }

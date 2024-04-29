@@ -46,7 +46,7 @@ export class AddToFavoritesBtnComponent implements OnInit {
         LocalStorage.FAVORITES,
         id
       );
-      this.artworkService.removeedArtworkFromFavorites.set(id);
+      this.artworkService.removedArtworkFromFavorites.set(id);
     } else {
       this.favoritesArtworks = [...this.favoritesArtworks, id];
       this.localStorageService.addElementToStorage<number>(

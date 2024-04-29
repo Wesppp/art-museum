@@ -17,11 +17,11 @@ export class AppComponent implements OnInit {
   @ViewChild('messages', { read: ViewContainerRef })
   messagesContainer!: ViewContainerRef;
 
-  public title: string = 'art-museum';
+  title: string = 'art-museum';
 
   constructor(private messageService: MessageService) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.messageService.errorMessage$.subscribe((message: string) => {
       if (message) {
         this.createComponent(message);
@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  public createComponent(message: string): void {
+  createComponent(message: string): void {
     const messageRef = this.messagesContainer.createComponent(
       ToastMessageComponent
     );

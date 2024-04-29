@@ -8,9 +8,9 @@
     @if (isSmallCard()) {
       <img
       [ngSrc]="artwork.image_url"
-      priority
       width="80"
       height="80"
+      loading="lazy"
       [alt]="artwork.thumbnail.alt_text"
       class="artwork-card__image">
     }

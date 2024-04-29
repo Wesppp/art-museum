@@ -14,5 +14,5 @@ import { NavBarItems } from '@models/nav-bar-item.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  public navBarItems: NavBarItems[] = NAV_BAR_ITEMS;
+  navBarItems: NavBarItems[] = NAV_BAR_ITEMS;
 }
