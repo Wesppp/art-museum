@@ -40,7 +40,7 @@ export class FavoritesArtworksComponent implements OnInit {
   ) {
     effect(
       () => {
-        const artId = this.artworksService.removeedArtworkFromFavorites();
+        const artId = this.artworksService.removedArtworkFromFavorites();
 
         if (artId) {
           this.favoritesArtworks.update((state) =>
